@@ -143,7 +143,20 @@ you email me.
 | Undo uncommitted changes to a file | `git checkout -- <path>` |
 | See the diff before committing | `git diff` |
 
-### 3. Common problems
+### 3. Ground rules
+
+- Work only inside that week's `labs/weekN/` folder. Don't edit other
+  weeks' folders — this matters once you're syncing from `upstream`.
+- One PR per week, opened from a branch named `weekN`.
+- Commit early and often. A PR with a single giant commit the night it's
+  due tells me nothing about your process; a PR with a real trail of
+  commits does.
+- If you're stuck on git itself (not the stats), ask — that's what week
+  2's lab and office hours are for. Losing an evening to a merge conflict
+  instead of the actual assignment helps no one.
+
+
+### 4. Common problems
 
 **"Please tell me who you are" when committing.** Git doesn't know your
 name/email yet — happens on a completely fresh install. Fix once:
@@ -249,28 +262,3 @@ a dataset or output file got swept into `git add` by accident — check
 `git status` before adding, and keep raw data out of your submission
 folder (reference it or regenerate it in the notebook instead of
 committing it). GitHub hard-blocks any single file over 100MB.
-
-**Notebook diffs are unreadable in the PR** (huge JSON blobs instead of
-clean cell-by-cell changes). This is normal for `.ipynb` files — GitHub
-renders a reasonable diff for Jupyter notebooks natively, but if it looks
-garbled, clear your cell outputs before committing
-(`Kernel → Restart & Clear Output` in Jupyter, or `Cell → All Output →
-Clear` depending on your interface) and re-run only what you need to
-confirm it works.
-
-**`warning: LF will be replaced by CRLF in <file>`.** Windows-only,
-harmless. Windows converts line endings on checkout/commit by default;
-Mac and Linux don't, so Windows students see this warning on ordinary
-text files. It doesn't break anything — safe to ignore.
-
-### 4. Ground rules
-
-- Work only inside that week's `labs/weekN/` folder. Don't edit other
-  weeks' folders — this matters once you're syncing from `upstream`.
-- One PR per week, opened from a branch named `weekN`.
-- Commit early and often. A PR with a single giant commit the night it's
-  due tells me nothing about your process; a PR with a real trail of
-  commits does.
-- If you're stuck on git itself (not the stats), ask — that's what week
-  2's lab and office hours are for. Losing an evening to a merge conflict
-  instead of the actual assignment helps no one.
