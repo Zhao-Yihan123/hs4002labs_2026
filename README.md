@@ -8,7 +8,18 @@ this once fully before you touch a terminal.
 
 You'll need a free GitHub account (sign up at github.com if you don't
 have one) and `git` installed on your machine (already covered in week 2
-lab; run `git --version` in your terminal to check).
+lab; run `git --version` in your terminal to check). You'll also want the
+**GitHub CLI** (`gh`) installed — it makes authentication painless (see
+Step 0 below). Check with `gh --version`; if it's missing:
+- **Mac:** `brew install gh`
+- **Windows:** `winget install --id GitHub.cli` (or the installer at
+  cli.github.com)
+
+**Windows students:** run every command in this memo inside **Git Bash**
+(installed automatically alongside Git for Windows), not PowerShell or
+Command Prompt. Everything here is bash syntax (`mkdir -p`, forward-slash
+paths, etc.) — PowerShell doesn't understand some of these the same way
+and will just confuse you.
 
 ### The mental model
 
@@ -19,11 +30,14 @@ lab; run `git --version` in your terminal to check).
   account. You have full write access to it. Because the upstream repo is
   public, your fork is public too — GitHub doesn't allow private forks of
   a public repo.
-- A **pull request (PR)** is you asking me to look at a set of changes on
-  your fork and review them. Opening a PR does **not** hand over your
-  code or merge it into anything — it just puts it in front of me for
-  comments. I will not be merging your PRs into the upstream repo; the PR
-  itself, plus my comments on it, is what gets graded.
+- A **pull request (PR)** is how you turn in the week's work — it's a
+  link to your branch's diff against `main` that I check off in my
+  grading spreadsheet. Opening a PR does **not** hand over your code or
+  merge it into anything. I will not be merging your PRs into the
+  upstream repo, and I won't be leaving comments on them either — grading
+  happens off GitHub, in the spreadsheet, not through PR review. If
+  something's wrong with a submission, I'll follow up with you directly
+  (office hours, course channel) rather than on the PR itself.
 - **Note on visibility:** because the repo is public, your fork and any
   PR you open are visible to anyone on the internet — not just me and
   your classmates. Keep that in mind for what you put in your submission.
@@ -35,19 +49,32 @@ lab; run `git --version` in your terminal to check).
    `github.com/<your-username>/hs4002labs_2026`.
 2. **Clone your fork** to your machine — not the original:
    ```bash
-   git clone git@github.com:<your-username>/hs4002labs_2026.git
+   git clone https://github.com/<your-username>/hs4002labs_2026.git
    cd hs4002labs_2026
    ```
 3. **Add the original repo as `upstream`**, so you can pull in new lab
    templates as I release them:
    ```bash
-   git remote add upstream git@github.com:xiangyum/hs4002labs_2026.git
+   git remote add upstream https://github.com/xiangyum/hs4002labs_2026.git
    git remote -v
    ```
    You should see `origin` pointing at your fork and `upstream` pointing
    at mine. `origin` is where you push; `upstream` is where you pull new
-   material from.
-4. **Make your submission folder**, using your matric number as the
+   material from. Fetching from `upstream` never needs a login — it's a
+   public repo, so anyone can read it.
+4. **Authenticate git so you can push to your fork.** Run:
+   ```bash
+   gh auth login
+   ```
+   and pick **GitHub.com → HTTPS → Login with a web browser**, then
+   follow the one-time code it gives you. This is a one-time setup per
+   machine — after this, `git push` just works with no further prompts.
+   (No `gh`? Git will instead prompt for a username and password the
+   first time you push — for the password, paste a **Personal Access
+   Token** from GitHub Settings → Developer settings → Personal access
+   tokens, not your account password; GitHub stopped accepting account
+   passwords for git operations in 2021.)
+5. **Make your submission folder**, using your matric number as the
    folder name (I'll use `e0123456` as a placeholder below — substitute
    your own):
    ```bash
@@ -100,16 +127,6 @@ Fill in the PR template (name, matric number, week) and submit. That's
 your submission — the PR link is what counts as turned in, not a file
 you email me.
 
-**Step 6 — respond to feedback.** I'll leave comments directly on the
-PR. If I request changes, just keep working on the *same branch* and push
-again:
-```bash
-git add labs/week2/e0123456/
-git commit -m "Address feedback: fix logistic regression interpretation"
-git push origin week2-e0123456
-```
-The PR updates automatically — you don't need to open a new one.
-
 ### 2. A cheat sheet
 
 | You want to... | Command |
@@ -127,15 +144,69 @@ The PR updates automatically — you don't need to open a new one.
 
 ### 3. Common problems
 
-**"Permission denied (publickey)" when pushing.** You haven't set up SSH
-keys with GitHub, or you cloned with the wrong URL. Either add an SSH key
-(GitHub's docs: *Settings → SSH and GPG keys*), or clone/push using the
-HTTPS URL instead and authenticate with a personal access token when
-prompted.
+**"Please tell me who you are" when committing.** Git doesn't know your
+name/email yet — happens on a completely fresh install. Fix once:
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+```
+
+**"Permission denied (publickey)" when pushing/fetching.** This means
+your remote is pointed at an SSH URL (`git@github.com:...`) instead of
+HTTPS, and this machine has no SSH key registered with GitHub. Check with
+`git remote -v` — if you see `git@github.com`, switch it:
+```bash
+git remote set-url origin https://github.com/<your-username>/hs4002labs_2026.git
+git remote set-url upstream https://github.com/xiangyum/hs4002labs_2026.git
+```
+Then re-run Step 4 of the one-time setup (`gh auth login`) if you haven't
+already, and try again.
+
+**Git prompts for a username and password when pushing, and your GitHub
+password doesn't work.** Expected — GitHub stopped accepting account
+passwords for git operations in 2021. Run `gh auth login` once (see Step
+4 of the one-time setup) and this goes away entirely; or, for the
+password prompt specifically, paste a Personal Access Token (GitHub
+Settings → Developer settings → Personal access tokens) instead of your
+actual password.
+
+**Push fails even though `gh auth login` worked.** If you've used `gh` for
+something else before (a personal project, another course), it may be
+logged into a different GitHub account than the one you forked with.
+Check which account is active:
+```bash
+gh auth status
+gh auth switch
+```
+
+**Push fails with "remote: Permission to xiangyum/hs4002labs_2026.git
+denied to `<your-username>`."** You cloned or pushed straight to the
+upstream repo instead of your fork — easy to do if you copied the URL
+from the address bar instead of clicking **Fork** first. Check
+`git remote -v`: `origin` should point at
+`github.com/<your-username>/hs4002labs_2026`, not
+`github.com/xiangyum/hs4002labs_2026`. If it's wrong, go fork the repo
+properly, then fix the remote:
+```bash
+git remote set-url origin https://github.com/<your-username>/hs4002labs_2026.git
+```
 
 **"failed to push some refs" / "non-fast-forward."** Your local branch
 is behind — usually because you forgot Step 1. Run `git pull origin
 <branch>` first, resolve any conflicts, then push again.
+
+**"fatal: Need to specify how to reconcile divergent branches."** You'll
+see this if `git pull` finds that your local branch and the remote one
+have both moved forward independently — recent versions of git refuse to
+guess whether you want a merge or a rebase, and ask you to set a default
+once:
+```bash
+git config --global pull.rebase false
+git pull origin main
+```
+This sets plain merging as your default (matching everything else in
+this workflow — you'll never need to rebase here), and only needs to be
+run once per machine.
 
 **Merge conflicts when syncing `upstream/main`.** This happens if you
 edited a file I've since updated in the template (rare, but possible if
@@ -147,10 +218,37 @@ Open the file, decide what should stay, delete the markers, then:
 git add <file>
 git commit
 ```
+If the conflict is inside an `.ipynb` file, this is noticeably harder
+than resolving a conflict in plain code — you're editing raw notebook
+JSON, not clean cell text, and the conflict markers can land mid-cell in
+a way that's easy to mangle. Go slowly, and if it looks unrecoverable,
+office hours beats guessing.
+
+**Your PR shows a huge, unrelated-looking diff.** Usually means you
+branched off a stale `main` — you skipped Step 1's sync before creating
+your branch, so your branch is missing commits `upstream/main` already
+has, and the PR diff includes those on top of your actual work. Fix by
+merging `upstream/main` into your branch (or, cleaner, delete the branch,
+sync `main` properly per Step 1, and re-branch).
+
+**Detached HEAD state.** If `git status` says `HEAD detached at
+<hash>`, you checked out a specific commit instead of a branch — easy to
+do with a typo, or if you clicked a commit link on GitHub and copied a
+command from there. You can look around safely, but don't commit here;
+anything you commit in this state can get lost the moment you switch
+branches. Get back to solid ground with `git checkout main` (or
+`git checkout -b rescue-branch` first if you'd made changes you want to
+keep).
 
 **You committed to `main` by accident instead of a branch.** Don't
 panic, don't force-push. Come to office hours or post in the course
 channel — this is fixable, but the fix depends on exactly what happened.
+
+**A push is slow, or GitHub rejects it for a large file.** Usually means
+a dataset or output file got swept into `git add` by accident — check
+`git status` before adding, and keep raw data out of your submission
+folder (reference it or regenerate it in the notebook instead of
+committing it). GitHub hard-blocks any single file over 100MB.
 
 **Notebook diffs are unreadable in the PR** (huge JSON blobs instead of
 clean cell-by-cell changes). This is normal for `.ipynb` files — GitHub
@@ -160,12 +258,23 @@ garbled, clear your cell outputs before committing
 Clear` depending on your interface) and re-run only what you need to
 confirm it works.
 
+**`warning: LF will be replaced by CRLF in <file>`.** Windows-only,
+harmless. Windows converts line endings on checkout/commit by default;
+Mac and Linux don't, so Windows students see this warning on ordinary
+text files. It doesn't break anything — safe to ignore.
+
 ### 4. Ground rules
 
 - Work only inside your own `labs/weekN/<matric_no>/` folder. Don't edit
   other students' folders or files outside your own directory — you
   won't be able to see their forks anyway, but this matters once you're
   syncing from `upstream`.
+- Use your matric number in **lowercase**, exactly as issued
+  (`e0123456`, not `E0123456`). Both Mac and Windows filesystems are
+  case-insensitive, so a wrong-case folder name won't cause any error or
+  even look wrong on your machine — but GitHub's underlying storage is
+  case-sensitive, so it won't match what's expected when I check your
+  submission.
 - One PR per week, opened from a branch named `weekN-<matric_no>`.
 - Commit early and often. A PR with a single giant commit the night it's
   due tells me nothing about your process; a PR with a real trail of
