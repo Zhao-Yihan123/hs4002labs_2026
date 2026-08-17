@@ -98,8 +98,13 @@ git push origin main
 directly on `main` — branching keeps each week's submission isolated and
 makes the PR diff clean:
 ```bash
-git checkout -b week2-e0123456
+git checkout -b week2
 ```
+Switching branches (`checkout`) can make files appear or disappear in
+Finder/Explorer if they only exist on one branch — that's expected, not
+a bug, and nothing is lost. Nothing gets deleted; it's just not the
+branch you're currently looking at. Switch back to where you were and
+everything reappears exactly as you left it.
 
 **Step 3 — do the lab.** Edit the notebook inside
 `labs/week2/e0123456/`. Commit as you go, not just once at the end —
@@ -114,14 +119,14 @@ git commit -m "Complete week 2: bivariate analysis exercises"
 **Step 4 — push your branch to your fork** (not upstream — you can't
 push there):
 ```bash
-git push origin week2-e0123456
+git push origin week2
 ```
 
 **Step 5 — open the PR.** On GitHub, go to your fork; you'll see a
 banner offering to "Compare & pull request" for the branch you just
 pushed. Click it. Confirm:
 - **base repository:** `xiangyum/hs4002labs_2026`, base `main`
-- **head repository:** your fork, compare `week2-e0123456`
+- **head repository:** your fork, compare `week2`
 
 Fill in the PR template (name, matric number, week) and submit. That's
 your submission — the PR link is what counts as turned in, not a file
@@ -275,7 +280,7 @@ text files. It doesn't break anything — safe to ignore.
   even look wrong on your machine — but GitHub's underlying storage is
   case-sensitive, so it won't match what's expected when I check your
   submission.
-- One PR per week, opened from a branch named `weekN-<matric_no>`.
+- One PR per week, opened from a branch named `weekN`.
 - Commit early and often. A PR with a single giant commit the night it's
   due tells me nothing about your process; a PR with a real trail of
   commits does.
