@@ -125,7 +125,15 @@ The PR updates automatically — you don't need to open a new one.
 | Undo uncommitted changes to a file | `git checkout -- <path>` |
 | See the diff before committing | `git diff` |
 
-### 3. Common problems
+### 3. Ground rules
+
+- Work only inside your own `labs/weekN/<matric_no>/` folder. Don't edit
+  other students' folders or files outside your own directory — you
+  won't be able to see their forks anyway, but this matters once you're
+  syncing from `upstream`.
+- One PR per week, opened from a branch named `weekN-<matric_no>`.
+
+### 4. Common problems
 
 **"Permission denied (publickey)" when pushing.** You haven't set up SSH
 keys with GitHub, or you cloned with the wrong URL. Either add an SSH key
@@ -152,24 +160,3 @@ git commit
 panic, don't force-push. Come to office hours or post in the course
 channel — this is fixable, but the fix depends on exactly what happened.
 
-**Notebook diffs are unreadable in the PR** (huge JSON blobs instead of
-clean cell-by-cell changes). This is normal for `.ipynb` files — GitHub
-renders a reasonable diff for Jupyter notebooks natively, but if it looks
-garbled, clear your cell outputs before committing
-(`Kernel → Restart & Clear Output` in Jupyter, or `Cell → All Output →
-Clear` depending on your interface) and re-run only what you need to
-confirm it works.
-
-### 4. Ground rules
-
-- Work only inside your own `labs/weekN/<matric_no>/` folder. Don't edit
-  other students' folders or files outside your own directory — you
-  won't be able to see their forks anyway, but this matters once you're
-  syncing from `upstream`.
-- One PR per week, opened from a branch named `weekN-<matric_no>`.
-- Commit early and often. A PR with a single giant commit the night it's
-  due tells me nothing about your process; a PR with a real trail of
-  commits does.
-- If you're stuck on git itself (not the stats), ask — that's what week
-  2's lab and office hours are for. Losing an evening to a merge conflict
-  instead of the actual assignment helps no one.
