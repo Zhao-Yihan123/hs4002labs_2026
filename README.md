@@ -74,17 +74,13 @@ and will just confuse you.
    Token** from GitHub Settings → Developer settings → Personal access
    tokens, not your account password; GitHub stopped accepting account
    passwords for git operations in 2021.)
-5. **Make your submission folder**, using your matric number as the
-   folder name (I'll use `e0123456` as a placeholder below — substitute
-   your own):
-   ```bash
-   mkdir -p labs/week2/e0123456
-   ```
 
 ### 1. The weekly cycle
 
-Repeat this every week, replacing `weekN` and `e0123456` with your actual
-week and matric number.
+Repeat this every week, replacing `weekN` with your actual week number.
+Each week's folder (`labs/weekN/`) already exists in the repo — I seed it
+with that week's notebook template before the lab, so there's no folder
+for you to create.
 
 **Step 1 — sync with upstream, so you have that week's template:**
 ```bash
@@ -107,12 +103,12 @@ branch you're currently looking at. Switch back to where you were and
 everything reappears exactly as you left it.
 
 **Step 3 — do the lab.** Edit the notebook inside
-`labs/week2/e0123456/`. Commit as you go, not just once at the end —
+`labs/week2/`. Commit as you go, not just once at the end —
 frequent, small commits with meaningful messages are part of what's being
 assessed here (and they're a lifesaver if something breaks and you need
 to see what changed):
 ```bash
-git add labs/week2/e0123456/
+git add labs/week2/
 git commit -m "Complete week 2: bivariate analysis exercises"
 ```
 
@@ -214,9 +210,8 @@ this workflow — you'll never need to rebase here), and only needs to be
 run once per machine.
 
 **Merge conflicts when syncing `upstream/main`.** This happens if you
-edited a file I've since updated in the template (rare, but possible if
-you experiment outside your own `labs/weekN/e0123456/` folder — another
-reason to keep your work scoped to your own folder). Git will mark the
+edited a file I've since updated in the template (rare, but possible).
+Git will mark the
 conflicting sections in the file with `<<<<<<<`, `=======`, `>>>>>>>`.
 Open the file, decide what should stay, delete the markers, then:
 ```bash
@@ -270,16 +265,8 @@ text files. It doesn't break anything — safe to ignore.
 
 ### 4. Ground rules
 
-- Work only inside your own `labs/weekN/<matric_no>/` folder. Don't edit
-  other students' folders or files outside your own directory — you
-  won't be able to see their forks anyway, but this matters once you're
-  syncing from `upstream`.
-- Use your matric number in **lowercase**, exactly as issued
-  (`e0123456`, not `E0123456`). Both Mac and Windows filesystems are
-  case-insensitive, so a wrong-case folder name won't cause any error or
-  even look wrong on your machine — but GitHub's underlying storage is
-  case-sensitive, so it won't match what's expected when I check your
-  submission.
+- Work only inside that week's `labs/weekN/` folder. Don't edit other
+  weeks' folders — this matters once you're syncing from `upstream`.
 - One PR per week, opened from a branch named `weekN`.
 - Commit early and often. A PR with a single giant commit the night it's
   due tells me nothing about your process; a PR with a real trail of
