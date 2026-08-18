@@ -11,7 +11,10 @@ have one) and `git` installed on your machine (already covered in week 2
 lab; run `git --version` in your terminal to check). You'll also want the
 **GitHub CLI** (`gh`) installed — it makes authentication painless (see
 Step 0 below). Check with `gh --version`; if it's missing:
-- **Mac:** `brew install gh`
+- **Mac (with Homebrew):** `brew install gh`
+- **Mac (no Homebrew):** download the `.pkg` installer from
+  [cli.github.com](https://cli.github.com) → "Download for macOS" and
+  run it like any other Mac app — no Homebrew needed.
 - **Windows:** `winget install --id GitHub.cli` (or the installer at
   cli.github.com)
 
